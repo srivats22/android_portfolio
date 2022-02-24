@@ -17,52 +17,12 @@ import androidmads.library.qrgenearator.QRGEncoder;
 
 
 public class Profile extends AppCompatActivity {
-    private ImageView qrImage;
-    private Bitmap bitmap;
-    private QRGEncoder qrgEncoder;
-    private Button btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        qrImage = findViewById(R.id.idIVQrcode);
-        btn = findViewById(R.id.shareBtn);
-        String url = getIntent().getStringExtra("url");
-
-        WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
-        Display display = manager.getDefaultDisplay();
-        Point point = new Point();
-        display.getSize(point);
-        int width = point.x;
-        int height = point.y;
-        int smallerDimension = Math.min(width, height);
-        smallerDimension = smallerDimension * 3 / 4;
-
-        qrgEncoder = new QRGEncoder(
-                url, null,
-                QRGContents.Type.TEXT,
-                smallerDimension);
-        qrgEncoder.setColorBlack(Color.BLACK);
-        qrgEncoder.setColorWhite(Color.WHITE);
-        try {
-            bitmap = qrgEncoder.getBitmap();
-            qrImage.setImageBitmap(bitmap);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent shareIntent = new Intent();
-                shareIntent.setAction(Intent.ACTION_SEND);
-                shareIntent.putExtra(Intent.EXTRA_TEXT, url);
-                shareIntent.setType("text/plain");
-                startActivity(Intent.createChooser(shareIntent, "Here's my profile"));
-            }
-        });
     }
 
 }
