@@ -5,11 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.os.Bundle;
-import android.view.Display;
-import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import androidmads.library.qrgenearator.QRGContents;
@@ -31,19 +27,10 @@ public class Profile extends AppCompatActivity {
         btn = findViewById(R.id.shareBtn);
         String url = getIntent().getStringExtra("url");
 
-        WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
-        Display display = manager.getDefaultDisplay();
-        Point point = new Point();
-        display.getSize(point);
-        int width = point.x;
-        int height = point.y;
-        int smallerDimension = Math.min(width, height);
-        smallerDimension = smallerDimension * 3 / 4;
-
         qrgEncoder = new QRGEncoder(
                 url, null,
                 QRGContents.Type.TEXT,
-                smallerDimension);
+                300);
         qrgEncoder.setColorBlack(Color.BLACK);
         qrgEncoder.setColorWhite(Color.WHITE);
         try {
@@ -53,15 +40,12 @@ public class Profile extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent shareIntent = new Intent();
-                shareIntent.setAction(Intent.ACTION_SEND);
-                shareIntent.putExtra(Intent.EXTRA_TEXT, url);
-                shareIntent.setType("text/plain");
-                startActivity(Intent.createChooser(shareIntent, "Here's my profile"));
-            }
+        btn.setOnClickListener(view -> {
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_TEXT, url);
+            shareIntent.setType("text/plain");
+            startActivity(Intent.createChooser(shareIntent, "Here's my profile"));
         });
     }
 
