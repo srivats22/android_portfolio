@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         instaCard = findViewById(R.id.instaCard);
 
+        // ToDo: change like 22 to be https://www.instagram.com/your_instagram_handle
         instaCard.setOnClickListener(view -> {
             Intent i = new Intent(getApplicationContext(), Profile.class);
             i.putExtra("url", "https://www.instagram.com/srivats22/");
